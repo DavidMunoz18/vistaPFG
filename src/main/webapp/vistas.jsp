@@ -52,7 +52,7 @@
             <li class="nav-item cart-container">
               <a href="<%= request.getContextPath() %>/carrito">
                 <i class="bi bi-cart"></i> <!-- Ícono de carrito -->
-                <span class="cart-count">0</span> <!-- Número de productos en el carrito -->
+                
               </a>
             </li>
           </ul>
