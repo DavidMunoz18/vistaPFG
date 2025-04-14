@@ -1,0 +1,2 @@
+[INFO] - InicioControlador - doGet - Inicio del proceso de obtención de productos - controladores.InicioControlador.doGet(InicioControlador.java:37)
+[INFO] - InicioControlador - doGet - No hay productos disponibles. - controladores.InicioControlador.doGet(InicioControlador.java:55)

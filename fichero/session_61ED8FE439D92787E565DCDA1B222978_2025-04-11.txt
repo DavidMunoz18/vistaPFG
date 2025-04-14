@@ -1,0 +1,8 @@
+[INFO] - ProductoControlador - doGet - Inicio del procesamiento de la solicitud GET - controladores.ProductoControlador.doGet(ProductoControlador.java:43)
+[INFO] - ProductoControlador - doGet - Mostrando lista de productos - controladores.ProductoControlador.doGet(ProductoControlador.java:68)
+[ERROR] - ProductoControlador - doGet - No hay productos disponibles. - controladores.ProductoControlador.doGet(ProductoControlador.java:112)
+[INFO] - LoginUsuarioControlador - doPost - Correo recibido: davidmpm05@gmail.com, Contraseña recibida: 123 - controladores.LoginUsuarioControlador.doPost(LoginUsuarioControlador.java:40)
+[INFO] - LoginUsuarioControlador - doPost - idUsuario guardado en la sesión: 3, Rol del usuario: usuario - controladores.LoginUsuarioControlador.doPost(LoginUsuarioControlador.java:63)
+[INFO] - LoginUsuarioControlador - doPost - Redirigiendo a la página de inicio. - controladores.LoginUsuarioControlador.doPost(LoginUsuarioControlador.java:81)
+[INFO] - InicioControlador - doGet - Inicio del proceso de obtención de productos - controladores.InicioControlador.doGet(InicioControlador.java:37)
+[INFO] - InicioControlador - doGet - No hay productos disponibles. - controladores.InicioControlador.doGet(InicioControlador.java:55)

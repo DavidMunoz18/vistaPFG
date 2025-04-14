@@ -1,0 +1,5 @@
+[INFO] - InicioControlador - doGet - Inicio del proceso de obtención de productos - controladores.InicioControlador.doGet(InicioControlador.java:37)
+[INFO] - InicioControlador - doGet - No hay productos disponibles. - controladores.InicioControlador.doGet(InicioControlador.java:55)
+[INFO] - MenuAdministradorControlador - doGet - Tamaño de la lista de productos: 0 - controladores.MenuAdministradorControlador.doGet(MenuAdministradorControlador.java:66)
+[INFO] - MenuAdministradorControlador - doGet - Tamaño de la lista de usuarios: 3 - controladores.MenuAdministradorControlador.doGet(MenuAdministradorControlador.java:68)
+[INFO] - MenuAdministradorControlador - doGet - Tamaño de la lista de marcas: 0 - controladores.MenuAdministradorControlador.doGet(MenuAdministradorControlador.java:70)

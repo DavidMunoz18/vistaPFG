@@ -22,6 +22,9 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="google-signin-client_id"
+   	content="868357228953-9padqblpv73igf2gf1el580cbpree75p.apps.googleusercontent.com">
+   	<script src="https://apis.google.com/js/platform.js" async defer></script>
     <style>
       .modal {
         display: none;
@@ -45,6 +48,28 @@
         float: right;
         font-size: 20px;
         font-weight: bold;
+      }
+      /* Botón de Google agregado dentro del formulario */
+      .google-btn {
+        width: 100%;
+        background-color: #4285F4;
+        color: white;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .google-btn:hover {
+        background-color: #357ae8;
+      }
+      .google-btn img {
+        width: 20px;
+        margin-right: 10px;
       }
     </style>
   </head>
@@ -74,6 +99,15 @@
 
         <!-- Formulario de Login -->
         <form id="loginForm" action="loginUsuario" method="post">
+          
+          <!-- Botón para iniciar sesión con Google, añadido encima del resto del formulario -->
+          <a href="<%= request.getContextPath() %>/loginGoogle">
+            <button type="button" class="google-btn">
+              <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Logo de Google">
+              Iniciar sesión con Google
+            </button>
+          </a>
+          
           <input type="email" name="email" id="email" placeholder="Email o número de teléfono" required>
           <input type="password" name="password" id="password" placeholder="Contraseña" required>
           <!-- Campo oculto para enviar el parámetro returnURL -->
@@ -103,6 +137,9 @@
     </div>
 
    <script>
+   
+   
+   
       // Mostrar modal de recuperación de contraseña al hacer clic en el enlace
       document.getElementById("forgotPasswordLink").addEventListener("click", function(event) {
         event.preventDefault();

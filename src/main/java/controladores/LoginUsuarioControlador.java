@@ -21,6 +21,7 @@ import utilidades.Utilidades;
 @WebServlet("/loginUsuario")
 public class LoginUsuarioControlador extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
     private AutentificacionServicio servicio;
 
     @Override
@@ -43,6 +44,16 @@ public class LoginUsuarioControlador extends HttpServlet {
         UsuarioDto usuario = servicio.verificarUsuario(correo, password);
 
         if (usuario != null) {
+        	
+        	System.out.println("USUARIO" + usuario.isEsGoogle());            // VALIDACIÓN: Si el usuario se registró con Google, no permite el inicio de sesión normal.
+            if (usuario.isEsGoogle()) {
+                Utilidades.escribirLog(request.getSession(), "[ERROR]", "LoginUsuarioControlador", "doPost", 
+                        "Este usuario solo puede iniciar sesión con Google: " + correo);
+                request.setAttribute("errorMessage", "Este usuario solo puede iniciar sesión con Google.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+            
             // Si las credenciales son válidas, guardar el idUsuario y rol en la sesión
             HttpSession session = request.getSession();
             session.setAttribute("idUsuario", usuario.getIdUsuario());
@@ -72,8 +83,7 @@ public class LoginUsuarioControlador extends HttpServlet {
                         "Redirigiendo a la página de inicio.");
                 response.sendRedirect("inicio");
             } else {
-                Utilidades.escribirLog(session, "[ERROR]", "LoginUsuarioControlador", "doPost", 
-                        "Rol desconocido.");
+                Utilidades.escribirLog(session, "[ERROR]", "LoginUsuarioControlador", "doPost", "Rol desconocido.");
                 request.setAttribute("errorMessage", "Rol desconocido.");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
@@ -86,3 +96,4 @@ public class LoginUsuarioControlador extends HttpServlet {
         }
     }
 }
+       

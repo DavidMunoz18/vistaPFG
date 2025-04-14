@@ -13,40 +13,56 @@
 </head>
 <body>
 
-     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <img src="imagenes/Code components-Photoroom.png" alt="Logo">
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath() %>/inicio">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link" href="nosotros.jsp">Nosotros</a></li>
-           <li class="nav-item"><a href="<%= request.getContextPath() %>/productos">Productos</a></li>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="imagenes/Code components-Photoroom.png" alt="Logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" 
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <!-- Botón de Inicio siempre visible -->
+        <li class="nav-item">
+          <a class="nav-link" href="<%= request.getContextPath() %>/inicio">Inicio</a>
+        </li>
+        <!-- Si el usuario tiene rol admin, se muestra un botón extra de Admin -->
+        <% if (session.getAttribute("rol") != null && "admin".equals(session.getAttribute("rol"))) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="<%= request.getContextPath() %>/admin">Admin</a>
+          </li>
+        <% } %>
+        <li class="nav-item">
+          <a class="nav-link" href="nosotros.jsp">Nosotros</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<%= request.getContextPath() %>/productos">Productos</a>
+        </li>
+        <% if (session.getAttribute("idUsuario") != null) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="<%= request.getContextPath() %>/cerrarSesion">Cerrar Sesión</a>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="login.jsp">Iniciar Sesión</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="registro.jsp">Registrarse</a>
+          </li>
+        <% } %>
+        <li class="nav-item cart-container">
+          <a class="nav-link" href="<%= request.getContextPath() %>/carrito">
+            <i class="bi bi-cart"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-            <li class="nav-item"><a class="nav-link" href="login.jsp">Iniciar Sesión</a></li>
-            <li class="nav-item"><a class="nav-link" href="registro.jsp">Registrarse</a></li>
-            <li class="nav-item cart-container">
-              <a href="<%= request.getContextPath() %>/carrito">
-                <i class="bi bi-cart"></i> <!-- Ícono de carrito -->
-                 
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
     <div class="container-fluid">
         <div class="row">
             <!-- Columna de imagen a la izquierda con más largo -->
