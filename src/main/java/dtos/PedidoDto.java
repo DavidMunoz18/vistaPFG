@@ -29,6 +29,9 @@ public class PedidoDto {
     private LocalDate fechaPedido;
     private String estado;
     private double total;
+    
+    // Nuevo campo para almacenar el identificador de transacción de PayPal
+    private String transaccionPaypal;
 
     /**
      * Constructor por defecto necesario para la deserialización.
@@ -50,10 +53,11 @@ public class PedidoDto {
      * @param fechaPedido La fecha en que se realizó el pedido.
      * @param estado El estado del pedido.
      * @param total El total calculado del pedido.
+     * @param transaccionPaypal El identificador de la transacción de PayPal (si aplica).
      */
     public PedidoDto(Long idUsuario, String contacto, String direccion, String metodoPago, String nombreTarjeta,
                      String numeroTarjeta, String fechaExpiracion, String cvc, List<PedidoProductoDto> productos,
-                     LocalDate fechaPedido, String estado, double total) {
+                     LocalDate fechaPedido, String estado, double total, String transaccionPaypal) {
         this.idUsuario = idUsuario;
         this.contacto = contacto;
         this.direccion = direccion;
@@ -66,6 +70,7 @@ public class PedidoDto {
         this.fechaPedido = fechaPedido;
         this.estado = estado;
         this.total = total;
+        this.transaccionPaypal = transaccionPaypal;
     }
 
     // Getters y setters
@@ -164,5 +169,13 @@ public class PedidoDto {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+    
+    public String getTransaccionPaypal() {
+        return transaccionPaypal;
+    }
+    
+    public void setTransaccionPaypal(String transaccionPaypal) {
+        this.transaccionPaypal = transaccionPaypal;
     }
 }

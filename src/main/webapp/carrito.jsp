@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <!-- Toastify JS -->
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- SDK de PayPal en modo Sandbox -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ATH9AU350i7mU-J5n1LsBsDtOkrAzOHmTFb6xZIO8QaFZVgDTRE2XhgFpqc-NqbW1-x5O0zkdsj88art&currency=EUR"></script>
 </head>
 <body>
  <!-- Barra de navegación -->
@@ -70,14 +72,12 @@
     </ul>
 </nav>
 
-
-
     <%
     // Obtener el mensaje y tipo de mensaje desde la sesión
     String mensaje = (String) session.getAttribute("mensaje");
     String tipoMensaje = (String) session.getAttribute("tipoMensaje");
     if(mensaje != null && tipoMensaje != null) {
-%>
+    %>
 <script type="text/javascript">
     Toastify({
         text: "<%= mensaje %>",
@@ -94,7 +94,6 @@
     session.removeAttribute("tipoMensaje");
     }
 %>
-
 
     <!-- Resto del contenido de la página de carrito -->
     <div class="min-w-screen min-h-screen bg-gray-50 py-5">
@@ -190,7 +189,7 @@
                                     <span class="text-gray-600">Total</span>
                                 </div>
                                 <div class="pl-3">
-                                    <span class="font-semibold text-gray-400 text-sm">AUD</span>
+                                    <span class="font-semibold text-gray-400 text-sm">EUR</span>
                                     <span class="font-semibold">
                                         <%
                                         double total = subtotal + impuestos;
@@ -200,9 +199,16 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Sección para pago con PayPal -->
+                        <div id="paypal-payment-section" class="w-full bg-white border border-gray-200 p-5 mb-6 text-gray-800">
+                            <h2 class="text-xl font-bold mb-4">Pagar con PayPal</h2>
+                            <div id="paypal-button-container"></div>
+                        </div>
+                        
                     </div>
 
-                    <!-- Formulario de pago -->
+                    <!-- Formulario de pago con tarjeta y datos de pago -->
                     <form action="pedidos" method="POST">
                         <input type="hidden" name="idUsuario" value="${idUsuario}">
                         <!-- Información de contacto -->
@@ -227,13 +233,13 @@
                             </div>
                         </div>
 
-                        <!-- Información de pago -->
+                        <!-- Información de pago con tarjeta -->
                         <div class="w-full mx-auto rounded-lg bg-white border border-gray-200 text-gray-800 font-light mb-6">
                             <div class="w-full p-3 border-b border-gray-200">
                                 <div class="mb-5">
                                     <label for="type1" class="flex items-center cursor-pointer">
                                         <input type="radio" class="form-radio h-5 w-5 text-indigo-500" name="metodoPago" id="type1" value="tarjeta" checked>
-                                        <img src="https://leadershipmemphis.org/wp-content/uploads/2020/08/780370.png" class="h-6 ml-3">
+                                        <img src="https://leadershipmemphis.org/wp-content/uploads/2020/08/780370.png" class="h-6 ml-3" alt="Logo Tarjeta">
                                     </label>
                                 </div>
                                 <div>
@@ -298,6 +304,31 @@
 		</div>
 	</div>
 
-	
+    <script>
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '<%= String.format("%.2f", subtotal + impuestos).replace(",", ".") %>' // Total con 2 decimales
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                // Aquí necesitas capturar la transacción de PayPal
+                // Redirigir al controlador para completar el pedido
+                window.location.href = '<%=request.getContextPath()%>/pedidos?transaccionPaypal=' + data.orderID;
+            });
+        },
+        onError: function(err) {
+            console.error('Error en el pago con PayPal:', err);
+            alert('Ha ocurrido un error al procesar el pago.');
+        }
+    }).render('#paypal-button-container');
+</script>
+
+
 </body>
 </html>

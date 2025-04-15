@@ -1,0 +1,4 @@
+[INFO] - CarritoControlador - doGet - Mostrando carrito de compras - controladores.CarritoControlador.doGet(CarritoControlador.java:170)
+[INFO] - InicioControlador - doGet - Inicio del proceso de obtención de productos - controladores.InicioControlador.doGet(InicioControlador.java:37)
+[INFO] - InicioControlador - doGet - Productos obtenidos: 1 - controladores.InicioControlador.doGet(InicioControlador.java:50)
+[INFO] - CarritoControlador - doGet - Mostrando carrito de compras - controladores.CarritoControlador.doGet(CarritoControlador.java:170)

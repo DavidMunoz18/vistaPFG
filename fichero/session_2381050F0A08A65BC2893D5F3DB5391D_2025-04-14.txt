@@ -1,0 +1,1 @@
+[INFO] - CarritoControlador - doGet - Mostrando carrito de compras - controladores.CarritoControlador.doGet(CarritoControlador.java:170)

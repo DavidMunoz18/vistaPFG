@@ -1,0 +1,4 @@
+[INFO] - CarritoControlador - doGet - Mostrando carrito de compras - controladores.CarritoControlador.doGet(CarritoControlador.java:170)
+[INFO] - CarritoControlador - doGet - Mostrando carrito de compras - controladores.CarritoControlador.doGet(CarritoControlador.java:170)
+[INFO] - CarritoControlador - doPost - Inicio acción eliminar producto del carrito - controladores.CarritoControlador.doPost(CarritoControlador.java:120)
+[ERROR] - CarritoControlador - doPost - Carrito no encontrado al intentar eliminar producto - controladores.CarritoControlador.doPost(CarritoControlador.java:137)

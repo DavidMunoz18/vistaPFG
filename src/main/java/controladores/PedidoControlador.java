@@ -2,12 +2,15 @@ package controladores;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.net.URLEncoder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dtos.CarritoDto;
 import dtos.PedidoDto;
 import dtos.PedidoProductoDto;
+import servicios.CarritoServicio;
 import servicios.PedidoServicio;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -18,36 +21,61 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import utilidades.Utilidades;
 
-/**
- * Controlador que maneja la creación de pedidos de los usuarios.
- * <p>
- * Este servlet procesa solicitudes POST para permitir que un usuario realice un pedido.
- * Recoge los datos del pedido, valida la información de la tarjeta, encripta el número de tarjeta
- * y crea un nuevo pedido en el sistema utilizando los servicios de PedidoServicio.
- * </p>
- */
 @WebServlet("/pedidos")
 public class PedidoControlador extends HttpServlet {
 
     private PedidoServicio pedidoServicio = new PedidoServicio();
+    // Servicio del carrito para llamar al método limpiarCarrito()
+    private CarritoServicio carritoServicio = new CarritoServicio();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Obtener el parámetro transaccionPaypal (si viene por GET para el flujo de PayPal)
+        String transaccionPaypal = request.getParameter("transaccionPaypal");
+
+        if (transaccionPaypal != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("mensaje", "Pago procesado con éxito.");
+            session.setAttribute("tipoMensaje", "success");
+            response.sendRedirect("carrito.jsp?pedidoExitoso=true");
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta el parámetro transaccionPaypal.");
+        }
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        String contacto       = request.getParameter("contacto");
-        String direccion      = request.getParameter("direccion");
-        String metodoPago     = request.getParameter("metodoPago");
+        // Obtener datos del pedido
+        String contacto = request.getParameter("contacto");
+        String direccion = request.getParameter("direccion");
+        String metodoPago = request.getParameter("metodoPago");
+        String transaccionPaypal = request.getParameter("transaccionPaypal");
+
+        // Datos de tarjeta (sólo para pago con tarjeta)
         String nombreTarjeta  = request.getParameter("nombreTarjeta");
         String numeroTarjeta  = request.getParameter("numeroTarjeta");
         String mesExpiracion  = request.getParameter("mesExpiracion");
         String anioExpiracion = request.getParameter("anioExpiracion");
-        String fechaExpiracion = mesExpiracion + "/" + anioExpiracion;
         String cvc            = request.getParameter("cvv");
 
+        // Si se paga con PayPal, limpiar datos de tarjeta y establecer valores por defecto
+        if ("paypal".equalsIgnoreCase(metodoPago)) {
+            nombreTarjeta = "";
+            numeroTarjeta = "";
+            mesExpiracion = "";
+            anioExpiracion = "";
+            cvc = "";
+            contacto = "PayPal"; // Asignar contacto predeterminado para PayPal
+            if (direccion == null || direccion.trim().isEmpty()) {
+                direccion = "N/A"; // Dirección por defecto para PayPal
+            }
+        }
+
+        // Verificar si el usuario está logueado
         Long idUsuario = (Long) session.getAttribute("idUsuario");
         if (idUsuario == null) {
-            // Se guardan los datos para reestablecerlos luego en el login
             session.setAttribute("pedidoContacto", contacto);
             session.setAttribute("pedidoDireccion", direccion);
             session.setAttribute("pedidoMetodoPago", metodoPago);
@@ -56,61 +84,54 @@ public class PedidoControlador extends HttpServlet {
             session.setAttribute("pedidoMesExpiracion", mesExpiracion);
             session.setAttribute("pedidoAnioExpiracion", anioExpiracion);
             session.setAttribute("pedidoCvv", cvc);
-
-            String returnURL = "carrito"; // Se usa carrito.jsp para homogeneidad
+            String returnURL = "carrito";
             response.sendRedirect("login.jsp?returnURL=" + URLEncoder.encode(returnURL, "UTF-8"));
             return;
         }
 
-        // Validar número de tarjeta
-        if (!validarNumeroTarjeta(numeroTarjeta)) {
-            session.setAttribute("mensaje", "El número de tarjeta no es válido. Debe contener entre 13 y 19 dígitos numéricos.");
-            session.setAttribute("tipoMensaje", "error");
-            // Guardar datos del formulario para repoblar (si fuera necesario)
-            session.setAttribute("contacto", contacto);
-            session.setAttribute("direccion", direccion);
-            session.setAttribute("metodoPago", metodoPago);
-            session.setAttribute("nombreTarjeta", nombreTarjeta);
-            session.setAttribute("numeroTarjeta", numeroTarjeta);
-            session.setAttribute("mesExpiracion", mesExpiracion);
-            session.setAttribute("anioExpiracion", anioExpiracion);
-            session.setAttribute("cvv", cvc);
-            response.sendRedirect("carrito");
-            return;
+        // Validaciones para pago con tarjeta
+        if (!"paypal".equalsIgnoreCase(metodoPago)) {
+            if (!validarNumeroTarjeta(numeroTarjeta)) {
+                session.setAttribute("mensaje", "El número de tarjeta no es válido. Debe contener entre 13 y 19 dígitos numéricos.");
+                session.setAttribute("tipoMensaje", "error");
+                response.sendRedirect("carrito.jsp");
+                return;
+            }
+            if (!validarCvc(cvc)) {
+                session.setAttribute("mensaje", "El código de seguridad (CVV) no es válido. Debe contener 3 o 4 dígitos.");
+                session.setAttribute("tipoMensaje", "error");
+                response.sendRedirect("carrito.jsp");
+                return;
+            }
+            numeroTarjeta = encriptarDatos(numeroTarjeta);
+            cvc = encriptarDatos(cvc);
         }
 
-        // Validar CVV
-        if (!validarCvc(cvc)) {
-            session.setAttribute("mensaje", "El código de seguridad (CVV) no es válido. Debe contener 3 o 4 dígitos.");
-            session.setAttribute("tipoMensaje", "error");
-            // Guardar datos del formulario para repoblar
-            session.setAttribute("contacto", contacto);
-            session.setAttribute("direccion", direccion);
-            session.setAttribute("metodoPago", metodoPago);
-            session.setAttribute("nombreTarjeta", nombreTarjeta);
-            session.setAttribute("numeroTarjeta", numeroTarjeta);
-            session.setAttribute("mesExpiracion", mesExpiracion);
-            session.setAttribute("anioExpiracion", anioExpiracion);
-            session.setAttribute("cvv", cvc);
-            response.sendRedirect("carrito");
-            return;
-        }
-
-        // Encriptar el número de tarjeta
-        numeroTarjeta = encriptarDatos(numeroTarjeta);
-        cvc = encriptarDatos(cvc);
-
-        // Obtener el carrito de la sesión
+        // Recuperar el carrito desde la sesión
         List<CarritoDto> carrito = (List<CarritoDto>) session.getAttribute("carrito");
+        // Si el carrito está vacío y estamos en flujo PayPal, intentar recuperarlo desde el parámetro "jsonCarrito"
+        if (carrito == null || carrito.isEmpty()) {
+            String jsonCarrito = request.getParameter("jsonCarrito");
+            if (jsonCarrito != null && !jsonCarrito.trim().isEmpty()) {
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    CarritoDto[] carritoArray = mapper.readValue(jsonCarrito, CarritoDto[].class);
+                    carrito = Arrays.asList(carritoArray);
+                    session.setAttribute("carrito", carrito);
+                } catch (Exception e) {
+                    Utilidades.escribirLog(session, "[ERROR]", "PedidoControlador", "doPost", "Error al parsear jsonCarrito: " + e.getMessage());
+                }
+            }
+        }
+
         if (carrito == null || carrito.isEmpty()) {
             session.setAttribute("mensaje", "El carrito está vacío");
             session.setAttribute("tipoMensaje", "error");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("carrito.jsp");
-            dispatcher.forward(request, response);
+            response.sendRedirect("carrito.jsp");
             return;
         }
 
-        // Construir lista de productos para el pedido
+        // Convertir el carrito en la lista de productos del pedido
         List<PedidoProductoDto> productosPedido = new ArrayList<>();
         for (CarritoDto carritoDto : carrito) {
             PedidoProductoDto productoPedidoDto = new PedidoProductoDto(
@@ -122,71 +143,54 @@ public class PedidoControlador extends HttpServlet {
             productosPedido.add(productoPedidoDto);
         }
 
-        // Crear objeto PedidoDto
+        // Crear el objeto PedidoDto con los datos recopilados
         PedidoDto pedidoDto = new PedidoDto();
         pedidoDto.setContacto(contacto);
         pedidoDto.setDireccion(direccion);
         pedidoDto.setMetodoPago(metodoPago);
         pedidoDto.setNombreTarjeta(nombreTarjeta);
         pedidoDto.setNumeroTarjeta(numeroTarjeta);
-        pedidoDto.setFechaExpiracion(fechaExpiracion);
+        if (!"paypal".equalsIgnoreCase(metodoPago)) {
+            pedidoDto.setFechaExpiracion(mesExpiracion + "/" + anioExpiracion);
+        } else {
+            pedidoDto.setFechaExpiracion("");
+        }
         pedidoDto.setCvc(cvc);
         pedidoDto.setIdUsuario(idUsuario);
         pedidoDto.setProductos(productosPedido);
 
-        String mensaje = null;
-        String tipoMensaje = "success";
+        if ("paypal".equalsIgnoreCase(metodoPago) && transaccionPaypal != null) {
+            pedidoDto.setTransaccionPaypal(transaccionPaypal);
+        }
+
+        String mensajeRespuesta = null;
+        String tipoMensajeRespuesta = "success";
 
         try {
-            mensaje = pedidoServicio.crearPedido(pedidoDto);
-            Utilidades.escribirLog(session, "[INFO]", "PedidoControlador", "doPost", "Respuesta del servicio: " + mensaje);
-
-            if (!"Pedido creado correctamente".equals(mensaje)) {
-                tipoMensaje = "error";
-                // Conservar datos del formulario
-                session.setAttribute("contacto", contacto);
-                session.setAttribute("direccion", direccion);
-                session.setAttribute("metodoPago", metodoPago);
-                session.setAttribute("nombreTarjeta", nombreTarjeta);
-                session.setAttribute("numeroTarjeta", numeroTarjeta);
-                session.setAttribute("mesExpiracion", mesExpiracion);
-                session.setAttribute("anioExpiracion", anioExpiracion);
-                session.setAttribute("cvv", cvc);
+            mensajeRespuesta = pedidoServicio.crearPedido(pedidoDto);
+            Utilidades.escribirLog(session, "[INFO]", "PedidoControlador", "doPost", "Respuesta del servicio: " + mensajeRespuesta);
+            if (!"Pedido creado correctamente".equals(mensajeRespuesta)) {
+                tipoMensajeRespuesta = "error";
             } else {
-                // Eliminar el carrito de la sesión en caso de éxito
+                // Llamar al servicio para limpiar el carrito en el backend
+                carritoServicio.limpiarCarrito();
+                // Eliminar el atributo "carrito" de la sesión para que se obtenga nuevamente al solicitarlo
                 session.removeAttribute("carrito");
             }
-
         } catch (Exception e) {
-            tipoMensaje = "error";
-            mensaje = "Error al crear el pedido: " + e.getMessage();
+            tipoMensajeRespuesta = "error";
+            mensajeRespuesta = "Error al crear el pedido: " + e.getMessage();
             e.printStackTrace();
             Utilidades.escribirLog(session, "[ERROR]", "PedidoControlador", "doPost", "Error al crear el pedido: " + e.getMessage());
-            // Conservar datos en caso de excepción
-            session.setAttribute("contacto", contacto);
-            session.setAttribute("direccion", direccion);
-            session.setAttribute("metodoPago", metodoPago);
-            session.setAttribute("nombreTarjeta", nombreTarjeta);
-            session.setAttribute("numeroTarjeta", numeroTarjeta);
-            session.setAttribute("mesExpiracion", mesExpiracion);
-            session.setAttribute("anioExpiracion", anioExpiracion);
-            session.setAttribute("cvv", cvc);
         }
 
-        // Guardar el mensaje y el tipo en la sesión para que el JSP lo muestre
-        session.setAttribute("mensaje", mensaje);
-        session.setAttribute("tipoMensaje", tipoMensaje);
-
-        if ("Pedido creado correctamente".equals(mensaje)) {
-            // Redirigir directamente a la página de confirmación o al inicio, en lugar del carrito
+        session.setAttribute("mensaje", mensajeRespuesta);
+        session.setAttribute("tipoMensaje", tipoMensajeRespuesta);
+        if ("Pedido creado correctamente".equals(mensajeRespuesta)) {
             response.sendRedirect("carrito.jsp?pedidoExitoso=true");
-         // Eliminar el carrito de la sesión en caso de éxito
-            session.removeAttribute("carrito");
         } else {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("carrito.jsp");
-            dispatcher.forward(request, response);
+            response.sendRedirect("carrito.jsp");
         }
-
     }
 
     private boolean validarNumeroTarjeta(String numeroTarjeta) {
