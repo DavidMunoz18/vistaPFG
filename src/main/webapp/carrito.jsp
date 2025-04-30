@@ -20,7 +20,7 @@
 </head>
 <body>
  <!-- Barra de navegación -->
-<nav class="navbar">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <a class="navbar-brand" href="#">
         <img src="imagenes/Code components-Photoroom.png" alt="Logo Code">
     </a>

@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
       <img src="imagenes/Code components-Photoroom.png" alt="Logo">
@@ -61,7 +61,7 @@
       </ul>
     </div>
   </div>
-</nav>
+</nav><br><br><br>
 
     <div class="container-fluid">
         <div class="row">

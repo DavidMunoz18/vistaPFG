@@ -21,7 +21,7 @@ import utilidades.Utilidades; // Asegúrate de que este sea el paquete correcto 
  */
 public class ProductoServicio {
 
-    private static final String API_BASE_URL = "http://localhost:8081/api/";
+    private static final String API_BASE_URL = "https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/";
 
     /**
      * Obtiene la lista completa de productos desde la API y realiza validaciones.

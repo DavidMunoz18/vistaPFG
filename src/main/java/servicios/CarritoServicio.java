@@ -17,7 +17,7 @@ import utilidades.Utilidades;
  */
 public class CarritoServicio {
 
-    private static final String API_URL = "http://localhost:8081/api/carrito";
+    private static final String API_URL = "https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/carrito";
 
     /**
      * Obtiene todos los productos que están actualmente en el carrito.
@@ -73,7 +73,7 @@ public class CarritoServicio {
         try {
             System.out.println("Buscando producto con ID: " + id);
 
-            URL url = new URL("http://localhost:8081/api/productos/" + id);
+            URL url = new URL("https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/productos/" + id);
             HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
             conexion.setRequestMethod("GET");
             conexion.setRequestProperty("Content-Type", "application/json");

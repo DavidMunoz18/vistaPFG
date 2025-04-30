@@ -39,7 +39,7 @@ public class ModificarServicio {
     public String modificarUsuario(long idUsuario, String nuevoNombre, String nuevoDni, String nuevoTelefono, String nuevoRol, byte[] nuevaFoto) {
         String boundary = "*****" + System.currentTimeMillis() + "*****"; // Límite para multipart
         try {
-            URL url = new URL("http://localhost:8081/api/modificar/modificarUsuario/" + idUsuario);
+            URL url = new URL("https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/modificar/modificarUsuario/" + idUsuario);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
@@ -122,7 +122,7 @@ public class ModificarServicio {
      */
     public ModificarUsuarioDto obtenerUsuarioPorId(long idUsuario) {
         try {
-            URL url = new URL("http://localhost:8081/api/modificar/buscarUsuario/" + idUsuario);
+            URL url = new URL("https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/modificar/buscarUsuario/" + idUsuario);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setDoOutput(true);

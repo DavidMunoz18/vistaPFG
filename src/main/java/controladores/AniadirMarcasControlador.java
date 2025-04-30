@@ -60,7 +60,7 @@ public class AniadirMarcasControlador extends HttpServlet {
             // Validar parámetros obligatorios
             if (nombre == null || paisOrigen == null || anioFundacionStr == null || descripcion == null ||
                 nombre.isEmpty() || paisOrigen.isEmpty() || anioFundacionStr.isEmpty() || descripcion.isEmpty()) {
-                response.sendRedirect("menuAdministrador.jsp?error=Todos los campos son obligatorios");
+                response.sendRedirect("admin?error=Todos los campos son obligatorios");
                 return;
             }
 
@@ -75,19 +75,19 @@ public class AniadirMarcasControlador extends HttpServlet {
 
             if (exito) {
                 Utilidades.escribirLog(session, "[INFO]", "AniadirMarcasControlador", "doPost", "Marca agregada exitosamente.");
-                response.sendRedirect("menuAdministrador.jsp?marcaAgregada=true");
+                response.sendRedirect("admin?marcaAgregada=true");
             } else {
                 Utilidades.escribirLog(session, "[INFO]", "AniadirMarcasControlador", "doPost", "Fallo al agregar marca.");
-                response.sendRedirect("menuAdministrador.jsp?marcaAgregada=false");
+                response.sendRedirect("admin?marcaAgregada=false");
             }
         } catch (NumberFormatException e) {
             Utilidades.escribirLog(session, "[ERROR]", "AniadirMarcasControlador", "doPost", "Error al convertir año de fundación: " + e.getMessage());
             e.printStackTrace();
-            response.sendRedirect("menuAdministrador.jsp?marcaAgregada=false");
+            response.sendRedirect("admin?marcaAgregada=false");
         } catch (Exception e) {
             Utilidades.escribirLog(session, "[ERROR]", "AniadirMarcasControlador", "doPost", "Error general: " + e.getMessage());
             e.printStackTrace();
-            response.sendRedirect("menuAdministrador.jsp?marcaAgregada=false");
+            response.sendRedirect("admin?marcaAgregada=false");
         }
     }
 }

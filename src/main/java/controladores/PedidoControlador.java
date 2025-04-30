@@ -35,6 +35,9 @@ public class PedidoControlador extends HttpServlet {
 
         if (transaccionPaypal != null) {
             HttpSession session = request.getSession();
+            carritoServicio.limpiarCarrito();
+            session.removeAttribute("carrito");
+          
             session.setAttribute("mensaje", "Pago procesado con éxito.");
             session.setAttribute("tipoMensaje", "success");
             response.sendRedirect("carrito.jsp?pedidoExitoso=true");
@@ -42,6 +45,7 @@ public class PedidoControlador extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta el parámetro transaccionPaypal.");
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

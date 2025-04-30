@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import servicios.AutentificacionServicio;
 import java.io.IOException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -50,27 +51,42 @@ public class NuevaContraseniaControlador extends HttpServlet {
         if (token != null) {
             Long fechaExpiracion = autentificacionServicio.obtenerFechaExpiracionDelToken(token);
 
+            // --- INICIO BLOQUE DE EXPIRACIÓN ---
+            HttpSession session = request.getSession();
+            if (fechaExpiracion != null && System.currentTimeMillis() > fechaExpiracion) {
+                session.setAttribute("tokenRecuperacion", null);
+                session.setAttribute("tokenGeneradoEn", null);
+                Utilidades.escribirLog(session, "[INFO]", "NuevaContraseniaControlador", "doGet",
+                        "Token de recuperación expirado y eliminado de la sesión");
+            }
+            // --- FIN BLOQUE DE EXPIRACIÓN ---
+
             // Log de validación del token
-            Utilidades.escribirLog(request.getSession(), "[INFO]", "NuevaContraseniaControlador", "doGet", "Recibido token: " + token);
+            Utilidades.escribirLog(request.getSession(), "[INFO]", "NuevaContraseniaControlador", "doGet",
+                    "Recibido token: " + token);
 
             if (fechaExpiracion != null && System.currentTimeMillis() <= fechaExpiracion) {
                 // Log de token válido
-                Utilidades.escribirLog(request.getSession(), "[INFO]", "NuevaContraseniaControlador", "doGet", "Token válido, redirigiendo a restablecer.jsp");
+                Utilidades.escribirLog(request.getSession(), "[INFO]", "NuevaContraseniaControlador", "doGet",
+                        "Token válido, redirigiendo a restablecer.jsp");
                 request.setAttribute("token", token);
                 request.getRequestDispatcher("/restablecer.jsp").forward(request, response);
             } else {
                 // Log de token expirado o inválido
-                Utilidades.escribirLog(request.getSession(), "[ERROR]", "NuevaContraseniaControlador", "doGet", "El token ha expirado o es inválido.");
+                Utilidades.escribirLog(request.getSession(), "[ERROR]", "NuevaContraseniaControlador", "doGet",
+                        "El token ha expirado o es inválido.");
                 request.setAttribute("error", "El token ha expirado o es inválido.");
                 request.getRequestDispatcher("/error.jsp").forward(request, response);
             }
         } else {
             // Log de error por token no proporcionado
-            Utilidades.escribirLog(request.getSession(), "[ERROR]", "NuevaContraseniaControlador", "doGet", "Token no proporcionado.");
+            Utilidades.escribirLog(request.getSession(), "[ERROR]", "NuevaContraseniaControlador", "doGet",
+                    "Token no proporcionado.");
             request.setAttribute("error", "Token no proporcionado.");
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
+
 
     /**
      * Maneja las solicitudes HTTP POST para actualizar la contraseña del usuario

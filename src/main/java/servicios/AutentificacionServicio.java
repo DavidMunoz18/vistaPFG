@@ -43,7 +43,7 @@ public class AutentificacionServicio {
             System.out.println("Verificando usuario con correo: " + correo);
 
             // Consultar el usuario completo desde la base de datos a través de la API
-            URL url = new URL("http://localhost:8081/api/login/consultarUsuario");
+            URL url = new URL("https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/login/consultarUsuario");
             HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
             conexion.setRequestMethod("POST");
             conexion.setRequestProperty("Content-Type", "application/json");
@@ -135,7 +135,7 @@ public class AutentificacionServicio {
         params.put("fechaExpiracion", String.valueOf(fechaExpiracion));  // Enviar la fecha de expiración
 
         try {
-            URL url = new URL("http://localhost:8081/api/usuarios/recuperarContrasenia");
+            URL url = new URL("https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/usuarios/recuperarContrasenia");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
@@ -150,7 +150,7 @@ public class AutentificacionServicio {
             int responseCode = conn.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 String asunto = "Recuperación de contraseña";
-                String enlaceRecuperacion = "http://localhost:8080/VistaCodeComponents/NuevaContrasenia?token=" + token;
+                String enlaceRecuperacion = "https://tomcat.dmunoz.es/VistaCodeComponents/NuevaContrasenia?token=" + token;
                 String contenido = "Has solicitado la recuperación de tu contraseña. Utiliza el siguiente enlace para continuar:\n\n" + enlaceRecuperacion;
                 Utilidades.escribirLog(null, "[INFO]", "AutentificacionServicio", "recuperarContrasenia", "Enviando correo de recuperación a: " + correo);
                 return Utilidades.enviarCorreo(correo, asunto, contenido);
@@ -174,7 +174,7 @@ public class AutentificacionServicio {
     public Long obtenerFechaExpiracionDelToken(String token) {
         Utilidades.escribirLog(null, "[INFO]", "AutentificacionServicio", "obtenerFechaExpiracionDelToken", "Obteniendo fecha de expiración para token: " + token);
         try {
-            URL url = new URL("http://localhost:8081/api/usuarios/obtenerFechaExpiracionToken?token=" + token);
+            URL url = new URL("https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/usuarios/obtenerFechaExpiracionToken?token=" + token);
             HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
             conexion.setRequestMethod("GET");
             conexion.setRequestProperty("Content-Type", "application/json");
@@ -219,7 +219,7 @@ public class AutentificacionServicio {
     public boolean actualizarContrasenia(String nuevaContraseniaEncriptada, String token) {
         Utilidades.escribirLog(null, "[INFO]", "AutentificacionServicio", "actualizarContrasenia", "Actualizando contraseña para token: " + token);
         try {
-            URL url = new URL("http://localhost:8081/api/usuarios/actualizarContrasenia");
+            URL url = new URL("https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/usuarios/actualizarContrasenia");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -258,7 +258,7 @@ public class AutentificacionServicio {
         Utilidades.escribirLog(null, "[INFO]", "AutentificacionServicio", "obtenerUsuarios", "Obteniendo lista de usuarios");
         List<UsuarioDto> usuarios = new ArrayList<>();
         try {
-            URL url = new URL("http://localhost:8081/api/usuarios/listar"); // Cambia el puerto y ruta según tu configuración
+            URL url = new URL("https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/usuarios/listar"); // Cambia el puerto y ruta según tu configuración
             HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
             conexion.setRequestMethod("GET");
             conexion.setRequestProperty("Content-Type", "application/json");

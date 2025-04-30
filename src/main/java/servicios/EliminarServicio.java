@@ -33,7 +33,7 @@ public class EliminarServicio {
         
         try {
             // Construir la URL para la solicitud DELETE
-            URL url = new URL("http://localhost:8081/api/eliminar/usuario/" + idUsuario);
+            URL url = new URL("https://localhost:8081/api/eliminar/usuario/" + idUsuario);
 
             // Abrir la conexión
             connection = (HttpURLConnection) url.openConnection();

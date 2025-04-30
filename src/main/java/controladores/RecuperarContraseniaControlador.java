@@ -38,6 +38,15 @@ public class RecuperarContraseniaControlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+    	
+    	HttpSession session = request.getSession();
+        Long expiracion = (Long) session.getAttribute("tokenGeneradoEn");
+        if (expiracion != null && System.currentTimeMillis() > expiracion) {
+            session.setAttribute("tokenRecuperacion", null);
+            session.setAttribute("tokenGeneradoEn", null);
+            Utilidades.escribirLog(session, "[INFO]", "RecuperarContraseniaControlador", "doPost",
+                    "Token de recuperación expirado y eliminado de la sesión");
+        }
         String correo = request.getParameter("correo");
         
         // Log: Inicio del proceso de recuperación
@@ -71,10 +80,7 @@ public class RecuperarContraseniaControlador extends HttpServlet {
             Utilidades.escribirLog(request.getSession(), "[INFO]", "RecuperarContraseniaControlador", "doPost", 
                     "Token generado: " + token + " con fecha de expiración: " + fechaExpiracion);
 
-            // Almacenar el token y su hora de generación en la sesión
-            HttpSession session = request.getSession();
-            session.setAttribute("tokenRecuperacion", token);
-            session.setAttribute("tokenGeneradoEn", fechaExpiracion);
+          
 
             // Llamar al servicio para guardar el token y su fecha de expiración en la API
             boolean exito = autentificacionServicio.recuperarContrasenia(correo, token, fechaExpiracion);

@@ -69,6 +69,13 @@
         <!-- Formulario 1: Datos de registro -->
         <!-- Se asigna target="hidden_iframe" para que la respuesta del envío no recargue la página -->
         <form id="registroForm" action="enviarCodigo" method="POST" target="hidden_iframe" onsubmit="return procesarRegistroForm();">
+         <!-- Botón para iniciar sesión con Google -->
+          <a href="<%= request.getContextPath() %>/loginGoogle">
+            <button type="button" class="google-btn">
+              <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Logo de Google">
+              Registrarse con Google
+            </button>
+          </a>
           <input type="text" name="nombreUsuario" id="nombreUsuario" placeholder="Nombre" required>
           <input type="email" name="emailUsuario" id="emailUsuario" placeholder="Email" required>
           <input type="number" name="telefonoUsuario" id="telefonoUsuario" placeholder="Teléfono" required>

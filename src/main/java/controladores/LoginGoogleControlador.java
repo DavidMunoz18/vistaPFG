@@ -35,7 +35,7 @@ public class LoginGoogleControlador extends HttpServlet {
     // Credenciales de Google (recuerda proteger estos valores en producción)
     private static final String CLIENT_ID = "868357228953-9padqblpv73igf2gf1el580cbpree75p.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "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";
-    private static final String REDIRECT_URI = "http://localhost:8080/VistaCodeComponents/loginGoogle";
+    private static final String REDIRECT_URI = "https://tomcat.dmunoz.es/VistaCodeComponents/loginGoogle";
 
 
     // Instancia del servicio de login con Google

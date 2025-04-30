@@ -19,6 +19,7 @@
     object-fit: cover;
   }
   body, html {
+  padding-top: 56px;
   margin: 0;
   padding: 0;
   width: 100%;

@@ -100,7 +100,7 @@
         <!-- Formulario de Login -->
         <form id="loginForm" action="loginUsuario" method="post">
           
-          <!-- Botón para iniciar sesión con Google, añadido encima del resto del formulario -->
+          <!-- Botón para iniciar sesión con Google -->
           <a href="<%= request.getContextPath() %>/loginGoogle">
             <button type="button" class="google-btn">
               <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Logo de Google">

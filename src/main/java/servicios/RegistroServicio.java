@@ -36,7 +36,7 @@ public class RegistroServicio {
             Utilidades.escribirLog(null, "[INFO]", "RegistroServicio", "enviarCodigoVerificacion", "Correo enviado correctamente. Código generado: " + codigoVerificacion);
 
             // Enviar el código generado a la API para almacenarlo.
-            URL url = new URL("http://localhost:8081/api/registro/almacenarCodigo");
+            URL url = new URL("https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/registro/almacenarCodigo");
             HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
             conexion.setRequestMethod("POST");
             conexion.setRequestProperty("Content-Type", "application/json");
@@ -83,7 +83,7 @@ public class RegistroServicio {
             String passwordEncriptada = BCrypt.hashpw(registroDto.getPasswordUsuario(), BCrypt.gensalt());
             registroDto.setPasswordUsuario(passwordEncriptada);
 
-            URL url = new URL("http://localhost:8081/api/registro/usuario");
+            URL url = new URL("https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/registro/usuario");
             HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
             conexion.setRequestMethod("POST");
             conexion.setRequestProperty("Content-Type", "application/json");

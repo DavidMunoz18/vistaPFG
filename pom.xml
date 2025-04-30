@@ -130,11 +130,8 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>com</groupId>
-			<artifactId>ecommerce</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		
+
 	</dependencies>
 
 

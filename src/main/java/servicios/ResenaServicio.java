@@ -21,7 +21,7 @@ import utilidades.Utilidades; // Asegúrate de que este sea el paquete correcto 
  */
 public class ResenaServicio {
 
-    private static final String API_URL_RESENIAS = "http://localhost:8081/api/resenias";
+    private static final String API_URL_RESENIAS = "https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/resenias";
 
     /**
      * Obtiene las reseñas de un producto dado su ID.

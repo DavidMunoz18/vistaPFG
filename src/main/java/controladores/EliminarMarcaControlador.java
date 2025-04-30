@@ -1,3 +1,10 @@
+/**
+ * Servlet encargado de gestionar la eliminación de una marca.
+ * <p>
+ * Recibe peticiones POST con el identificador de la marca a eliminar,
+ * delega la operación al servicio de marca y redirige al administrador
+ * indicando éxito o error.</p>
+ */
 package controladores;
 
 import java.io.IOException;
@@ -12,14 +19,38 @@ import utilidades.Utilidades;
 
 @WebServlet("/eliminarMarca")
 public class EliminarMarcaControlador extends HttpServlet {
+    /**
+     * UID de versión para serialización.
+     */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Servicio que gestiona la lógica de negocio relacionada con marcas.
+     */
     private MarcaServicio marcaServicio;
     
+    /**
+     * Inicializa el servlet creando una instancia de MarcaServicio.
+     *
+     * @throws ServletException si ocurre un error durante la inicialización
+     */
     @Override
     public void init() throws ServletException {
         marcaServicio = new MarcaServicio();
     }
     
+    /**
+     * Procesa la petición POST para eliminar una marca.
+     * <p>
+     * Obtiene el parámetro "id" de la solicitud, valida su formato,
+     * invoca el servicio para eliminar la marca y redirige a la vista de administración
+     * indicando si la operación fue exitosa o no.</p>
+     *
+     * @param request  objeto HttpServletRequest con los datos de la petición
+     * @param response objeto HttpServletResponse para enviar la respuesta
+     * @throws ServletException si ocurre un error en el servlet
+     * @throws IOException      si ocurre un error de E/S durante la redirección
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
