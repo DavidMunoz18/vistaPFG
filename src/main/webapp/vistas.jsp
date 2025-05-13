@@ -72,7 +72,7 @@
         </ul>
       </div>
     </div>
-  </nav>
+  </nav><br><br><br>
 
 
     <!-- Contenido principal -->
@@ -99,24 +99,34 @@
         <% if (producto != null) { %>
         <!-- Detalles del producto -->
         <div class="row detalle-producto">
-            <div class="col-md-6">
-                <img src="data:image/png;base64,<%= producto.getImagenBase64() %>" alt="<%= producto.getNombre() %>" class="img-fluid rounded shadow">
-            </div>
-            <div class="col-md-6">
-                <h1 class="fw-bold"><%= producto.getNombre() %></h1>
-                <p class="h4 text-success"><strong>Precio:</strong> $<%= producto.getPrecio() %></p>
-                <p><strong>Descripción:</strong> <%= producto.getDescripcion() %></p>
-                <form action="<%=request.getContextPath()%>/carrito" method="POST" class="d-flex align-items-center">
-                    <input type="hidden" name="action" value="agregar">
-                    <input type="hidden" name="id" value="<%=producto.getId()%>">
-                    <input type="hidden" name="nombre" value="<%=producto.getNombre()%>">
-                    <input type="hidden" name="precio" value="<%=producto.getPrecio()%>">
-                    <input type="hidden" name="imagen" value="<%=producto.getImagen()%>">
-                    <input type="number" name="cantidad" value="1" min="1" required class="form-control me-2" style="width: 80px; text-align: center;">
-                    <button type="submit" class="btn btn-primary">Agregar al carrito</button>
-                </form>
-            </div>
-        </div>
+    <div class="col-md-6">
+        <img src="data:image/png;base64,<%= producto.getImagenBase64() %>"
+             alt="<%= producto.getNombre() %>"
+             class="img-fluid rounded shadow">
+    </div>
+    <div class="col-md-6">
+        <h1 class="fw-bold"><%= producto.getNombre() %></h1>
+        <!-- Aquí se muestra la marca -->
+        <p class="h5">
+            <strong>Marca:</strong>
+            <%= producto.getMarca().getNombre() %>
+            (<%= producto.getMarca().getPaisOrigen() %>,
+             Fundada en <%= producto.getMarca().getAnioFundacion() %>)
+        </p>
+        <p class="h4 text-success"><strong>Precio:</strong> $<%= producto.getPrecio() %></p>
+        <p><strong>Descripción:</strong> <%= producto.getDescripcion() %></p>
+        <form action="<%=request.getContextPath()%>/carrito" method="POST" class="d-flex align-items-center">
+            <input type="hidden" name="action" value="agregar">
+            <input type="hidden" name="id" value="<%=producto.getId()%>">
+            <input type="hidden" name="nombre" value="<%=producto.getNombre()%>">
+            <input type="hidden" name="precio" value="<%=producto.getPrecio()%>">
+            <input type="hidden" name="imagen" value="<%=producto.getImagen()%>">
+            <input type="number" name="cantidad" value="1" min="1" required
+                   class="form-control me-2" style="width: 80px; text-align: center;">
+            <button type="submit" class="btn btn-primary">Agregar al carrito</button>
+        </form>
+    </div>
+</div>
 
         <!-- Reseñas del producto -->
         <h2 class="mt-4">Reseñas del Producto</h2>

@@ -123,7 +123,7 @@
                                     <img src="data:image/jpeg;base64,<%=producto.getImagen()%>" alt="Imagen producto">
                                 </div>
                                 <div class="flex-grow pl-3">
-                                    <h5>Producto ID: <%=producto.getId()%></h5>
+                                    
                                     <h6 class="font-semibold uppercase text-gray-600"><%=producto.getNombre()%></h6>
                                     <p class="text-gray-400">x <%=producto.getCantidad()%></p>
                                 </div>

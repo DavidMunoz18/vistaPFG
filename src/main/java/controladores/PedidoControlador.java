@@ -40,7 +40,7 @@ public class PedidoControlador extends HttpServlet {
           
             session.setAttribute("mensaje", "Pago procesado con éxito.");
             session.setAttribute("tipoMensaje", "success");
-            response.sendRedirect("carrito.jsp?pedidoExitoso=true");
+            response.sendRedirect("carrito?pedidoExitoso=true");
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta el parámetro transaccionPaypal.");
         }
@@ -98,13 +98,13 @@ public class PedidoControlador extends HttpServlet {
             if (!validarNumeroTarjeta(numeroTarjeta)) {
                 session.setAttribute("mensaje", "El número de tarjeta no es válido. Debe contener entre 13 y 19 dígitos numéricos.");
                 session.setAttribute("tipoMensaje", "error");
-                response.sendRedirect("carrito.jsp");
+                response.sendRedirect("carrito");
                 return;
             }
             if (!validarCvc(cvc)) {
                 session.setAttribute("mensaje", "El código de seguridad (CVV) no es válido. Debe contener 3 o 4 dígitos.");
                 session.setAttribute("tipoMensaje", "error");
-                response.sendRedirect("carrito.jsp");
+                response.sendRedirect("carrito");
                 return;
             }
             numeroTarjeta = encriptarDatos(numeroTarjeta);
@@ -131,7 +131,7 @@ public class PedidoControlador extends HttpServlet {
         if (carrito == null || carrito.isEmpty()) {
             session.setAttribute("mensaje", "El carrito está vacío");
             session.setAttribute("tipoMensaje", "error");
-            response.sendRedirect("carrito.jsp");
+            response.sendRedirect("carrito");
             return;
         }
 
@@ -191,9 +191,9 @@ public class PedidoControlador extends HttpServlet {
         session.setAttribute("mensaje", mensajeRespuesta);
         session.setAttribute("tipoMensaje", tipoMensajeRespuesta);
         if ("Pedido creado correctamente".equals(mensajeRespuesta)) {
-            response.sendRedirect("carrito.jsp?pedidoExitoso=true");
+            response.sendRedirect("carrito?pedidoExitoso=true");
         } else {
-            response.sendRedirect("carrito.jsp");
+            response.sendRedirect("carrito");
         }
     }
 

@@ -513,15 +513,24 @@ mark {
 											<i class="fas fa-edit" style="color: blue;"></i>
 										</button>
 									</form> <!-- Formulario para eliminar la marca -->
-									<form action="eliminarMarca" method="post"
-										style="display: inline;">
-										<input type="hidden" name="id" value="<%=marca.getId()%>">
-										<button type="submit" style="border: none; background: none;"
-											title="Eliminar"
-											onclick="return confirm('¿Estás seguro de eliminar esta marca?');">
-											<i class="fas fa-trash-alt" style="color: red;"></i>
-										</button>
-									</form>
+									<form action="eliminarMarca" method="post" style="display: inline;">
+    <input type="hidden" name="id" value="<%=marca.getId()%>">
+    <button type="submit"
+            style="border: none; background: none;"
+            title="Eliminar"
+            onclick="
+               var respuesta = prompt('Para confirmar la eliminación, por favor escriba ELIMINACION');
+               if (respuesta === 'ELIMINACION') {
+                   return true;
+               } else {
+                   alert('Texto incorrecto. La eliminación ha sido cancelada.');
+                   return false;
+               }
+            ">
+        <i class="fas fa-trash-alt" style="color: red;"></i>
+    </button>
+</form>
+
 								</td>
 							</tr>
 							<%

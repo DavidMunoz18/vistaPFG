@@ -70,7 +70,7 @@
       </ul>
     </div>
   </div>    
-</nav><br><br><br>
+</nav><br><br><br><br>
 
 
   <div
@@ -174,7 +174,7 @@
             <img
               alt="Complementos"
               class="card-img-top img-fluid"
-              src="imagenes/Component 17.png"
+              src="imagenes/Component 6.png"
             />
             <div class="card-body text-center">
               <a class="btn btn-link" href="https://tomcat.dmunoz.es/VistaCodeComponents/productos?categoria=Componentes"> Ver todos </a>
@@ -186,7 +186,7 @@
             <img
               alt="Portátiles MSI"
               class="card-img-top img-fluid"
-              src="imagenes/Portatiles.png"
+              src="imagenes/Component 7.png"
             />
             <div class="card-body text-center">
               <a class="btn btn-link" href="https://tomcat.dmunoz.es/VistaCodeComponents/productos?categoria=Port%C3%A1tiles"> Ver todos </a>
@@ -198,7 +198,7 @@
             <img
               alt="Ordenadores de mesa"
               class="card-img-top img-fluid"
-              src="imagenes/ordenadormesa.png"
+              src="imagenes/Component 10.png"
             />
             <div class="card-body text-center">
               <a class="btn btn-link" href="https://tomcat.dmunoz.es/VistaCodeComponents/productos?categoria=Ordenadores"> Ver todos </a>
@@ -210,7 +210,7 @@
             <img
               alt="Monitores"
               class="card-img-top img-fluid"
-              src="imagenes/monitor.png"
+              src="imagenes/Component 11.png"
             />
             <div class="card-body text-center">
               <a class="btn btn-link" href="https://tomcat.dmunoz.es/VistaCodeComponents/productos?categoria=Ofertas"> Ver todos </a>
