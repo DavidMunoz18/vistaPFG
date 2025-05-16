@@ -72,7 +72,7 @@ public class PedidoServicio {
 
             String jsonInputString = objectMapper.writeValueAsString(pedidoDto);
 
-            // Imprimir el JSON enviado (útil para depuración)
+           
             System.out.println("JSON enviado: " + jsonInputString);
 
             try (OutputStream os = connection.getOutputStream()) {

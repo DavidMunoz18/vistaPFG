@@ -37,7 +37,7 @@ public class AniadirMarcasControlador extends HttpServlet {
             throws ServletException, IOException {
         List<MarcaDto> marcas = marcaServicio.obtenerMarcas();
         request.setAttribute("marcas", marcas);
-        // Se asume que la página "admin.jsp" es la vista que contiene el formulario para agregar productos y marcas.
+        
         request.getRequestDispatcher("menuAdministrador.jsp").forward(request, response);
     }
 

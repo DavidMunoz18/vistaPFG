@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.servlet.http.HttpSession;
 import utilidades.Utilidades;
 
 /**
@@ -18,6 +19,23 @@ import utilidades.Utilidades;
 public class CarritoServicio {
 
     private static final String API_URL = "https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api/carrito";
+
+    /**
+     * Obtiene todos los productos del carrito desde sesión si existen,
+     * si no, los obtiene de la API y los guarda en sesión.
+     *
+     * @param session Sesión actual del usuario.
+     * @return Lista de productos en el carrito.
+     */
+    public List<CarritoDto> obtenerCarrito(HttpSession session) {
+        @SuppressWarnings("unchecked")
+        List<CarritoDto> carrito = (List<CarritoDto>) session.getAttribute("carrito");
+        if (carrito != null) return carrito;
+
+        carrito = obtenerCarrito();
+        session.setAttribute("carrito", carrito);
+        return carrito;
+    }
 
     /**
      * Obtiene todos los productos que están actualmente en el carrito.
@@ -108,11 +126,10 @@ public class CarritoServicio {
     }
 
     /**
-     * Agrega un producto al carrito.
-     * Realiza una petición HTTP POST a la API para agregar el producto al carrito.
+     * Agrega un producto al carrito haciendo una petición HTTP POST a la API.
      *
-     * @param producto El producto a agregar al carrito.
-     * @return true si el producto se agregó correctamente, false en caso contrario.
+     * @param producto El producto a agregar.
+     * @return true si se agregó correctamente, false en caso contrario.
      */
     public boolean agregarProducto(CarritoDto producto) {
         Utilidades.escribirLog(null, "[INFO]", "CarritoServicio", "agregarProducto", "Inicio de agregar producto: ID = " + producto.getId() + ", Nombre: " + producto.getNombre());
@@ -149,11 +166,37 @@ public class CarritoServicio {
     }
 
     /**
-     * Elimina un producto del carrito.
-     * Realiza una petición HTTP DELETE a la API para eliminar el producto del carrito.
+     * Agrega un producto al carrito y lo guarda también en la sesión del usuario.
      *
-     * @param id El ID del producto a eliminar.
-     * @return true si el producto fue eliminado correctamente, false en caso contrario.
+     * @param session Sesión actual del usuario.
+     * @param producto El producto a agregar.
+     * @return true si se agregó correctamente, false en caso contrario.
+     */
+    public boolean agregarProducto(HttpSession session, CarritoDto producto) {
+        boolean ok = agregarProducto(producto);
+        if (ok) {
+            @SuppressWarnings("unchecked")
+            List<CarritoDto> carrito = (List<CarritoDto>) session.getAttribute("carrito");
+            if (carrito == null) carrito = new ArrayList<>();
+            boolean existe = false;
+            for (CarritoDto p : carrito) {
+                if (p.getId() == producto.getId()) {
+                    p.setCantidad(p.getCantidad() + producto.getCantidad());
+                    existe = true;
+                    break;
+                }
+            }
+            if (!existe) carrito.add(producto);
+            session.setAttribute("carrito", carrito);
+        }
+        return ok;
+    }
+
+    /**
+     * Elimina un producto del carrito mediante petición HTTP DELETE.
+     *
+     * @param id ID del producto a eliminar.
+     * @return true si se eliminó correctamente, false en caso contrario.
      */
     public boolean eliminarProducto(long id) {
         Utilidades.escribirLog(null, "[INFO]", "CarritoServicio", "eliminarProducto", "Inicio de eliminación del producto con ID: " + id);
@@ -179,7 +222,26 @@ public class CarritoServicio {
         }
         return false;
     }
-    
+
+    /**
+     * Elimina un producto del carrito remoto y luego actualiza sesión.
+     *
+     * @param session Sesión HTTP del usuario.
+     * @param id       ID del producto a eliminar.
+     * @return {@code true} siempre que la sesión se haya actualizado.
+     */
+    public boolean eliminarProducto(HttpSession session, long id) {
+        boolean okRemoto = eliminarProducto(id);  // tu llamada remota
+        @SuppressWarnings("unchecked")
+        List<CarritoDto> carrito = (List<CarritoDto>) session.getAttribute("carrito");
+        if (carrito != null) {
+            carrito.removeIf(p -> p.getId() == id);
+            session.setAttribute("carrito", carrito);
+        }
+        return true;  // da siempre éxito para no bloquear la vista
+    }
+
+
     /**
      * Limpia (elimina TODOS los productos) del carrito.
      * Realiza una petición HTTP DELETE a la API en la ruta /limpiar para vaciar el carrito.
@@ -201,4 +263,15 @@ public class CarritoServicio {
         }
     }
 
+    /**
+     * Limpia el carrito tanto en la API como en la sesión del usuario.
+     *
+     * @param session Sesión actual del usuario.
+     * @return true si el carrito se limpió correctamente, false en caso contrario.
+     */
+    public boolean limpiarCarrito(HttpSession session) {
+        boolean ok = limpiarCarrito();
+        if (ok) session.setAttribute("carrito", new ArrayList<CarritoDto>());
+        return ok;
+    }
 }

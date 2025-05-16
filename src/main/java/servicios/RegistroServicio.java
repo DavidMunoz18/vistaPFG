@@ -1,3 +1,17 @@
+/**
+ * Servicio encargado de gestionar el proceso de registro de nuevos usuarios.
+ * <p>
+ * Incluye funcionalidades como el envío de un código de verificación por correo electrónico
+ * y el alta del usuario en el sistema mediante peticiones HTTP a la API externa.
+ * </p>
+ *
+ * <p>
+ * Utiliza {@link BCrypt} para cifrar contraseñas, y {@link ObjectMapper} para la conversión JSON
+ * de los DTOs utilizados. También hace uso de la clase {@link Utilidades} para tareas comunes
+ * como logging y envío de correos.
+ * </p>
+ *
+ */
 package servicios;
 
 import java.io.OutputStream;

@@ -45,11 +45,11 @@ public class MarcaServicio {
                     while ((inputLine = in.readLine()) != null) {
                         response.append(inputLine);
                     }
-                    // Imprimir la respuesta completa en consola
+                    
                     System.out.println("Respuesta de la API: " + response.toString());
                     Utilidades.escribirLog(null, "[INFO]", "MarcaServicio", "obtenerMarcas", "Respuesta de la API: " + response.toString());
 
-                    // Mapear el JSON a un arreglo de MarcaDto
+                    
                     ObjectMapper mapper = new ObjectMapper();
                     MarcaDto[] marcasArray = mapper.readValue(response.toString(), MarcaDto[].class);
                     
@@ -135,7 +135,7 @@ public class MarcaServicio {
             Utilidades.escribirLog(null, "[ERROR]", "MarcaServicio", "modificarMarca", "El nombre de la marca es obligatorio.");
             return false;
         }
-        // Construir la URL para la modificación
+       
         String API_URL_MODIFICAR = API_BASE_URL + "marcas/";
         try {
             URL url = new URL(API_URL_MODIFICAR + id);
@@ -143,7 +143,7 @@ public class MarcaServicio {
             conexion.setRequestMethod("PUT");
             conexion.setRequestProperty("Content-Type", "application/json");
             conexion.setDoOutput(true);
-            // Construir el JSON con todos los campos
+            
             String jsonMarca = "{" +
                     "\"nombre\": \"" + nombre + "\"," +
                     "\"paisOrigen\": \"" + paisOrigen + "\"," +

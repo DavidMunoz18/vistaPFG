@@ -1,3 +1,15 @@
+/**
+ * Servicio encargado de gestionar el inicio de sesión de usuarios mediante Google.
+ * <p>
+ * Utiliza la API REST externa para autenticar al usuario a través del endpoint
+ * <code>/usuarios/loginGoogle</code>. Convierte el DTO {@link UsuarioDto} a JSON,
+ * realiza la petición HTTP y deserializa la respuesta.
+ * </p>
+ *
+ * <p>
+ * Internamente usa Jackson para el mapeo JSON y soporte para fechas con {@link JavaTimeModule}.
+ * </p>
+ */
 package servicios;
 
 import java.io.OutputStream;
@@ -12,7 +24,7 @@ import dtos.UsuarioDto;
 
 public class LoginGoogleServicio {
 
-    // URL base de la API; asegúrate de que coincide con el endpoint configurado en el backend.
+    
     private static final String API_BASE_URL = "https://tomcat.dmunoz.es/ApiEcommerceOrdenadores-0.0.1/api";
     private final ObjectMapper mapper;
 

@@ -55,7 +55,7 @@ public class AniadirProductosControlador extends HttpServlet {
 
             // Validar parámetros obligatorios
             if (nombre.isEmpty() || descripcion.isEmpty() || categoria.isEmpty() || marcaNombre.isEmpty()) {
-                response.sendRedirect("productos.jsp?error=Faltan campos obligatorios");
+                response.sendRedirect("productos?error=Faltan campos obligatorios");
                 return;
             }
 
@@ -73,7 +73,7 @@ public class AniadirProductosControlador extends HttpServlet {
             } catch (NumberFormatException e) {
                 Utilidades.escribirLog(session, "[ERROR]", "AniadirProductosControlador", "doPost", 
                     "Error en conversión de números: " + e.getMessage());
-                response.sendRedirect("productos.jsp?error=Formato numérico inválido");
+                response.sendRedirect("productos?error=Formato numérico inválido");
                 return;
             }
 
@@ -103,12 +103,12 @@ public class AniadirProductosControlador extends HttpServlet {
                 response.sendRedirect("admin?productoAgregado=true");
             } else {
                 Utilidades.escribirLog(session, "[ERROR]", "AniadirProductosControlador", "doPost", "Error al agregar el producto.");
-                response.sendRedirect("productos.jsp?error=No se pudo agregar el producto");
+                response.sendRedirect("productos?error=No se pudo agregar el producto");
             }
         } catch (Exception e) {
             Utilidades.escribirLog(session, "[ERROR]", "AniadirProductosControlador", "doPost", "Error general: " + e.getMessage());
             e.printStackTrace();
-            response.sendRedirect("productos.jsp?error=Error inesperado");
+            response.sendRedirect("productos?error=Error inesperado");
         }
     }
 }

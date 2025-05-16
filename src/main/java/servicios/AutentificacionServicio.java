@@ -115,7 +115,7 @@ public class AutentificacionServicio {
             e.printStackTrace();
         }
 
-        return usuario;  // Devuelve el usuario completo o null si no se verifica
+        return usuario;  
     }
 
 

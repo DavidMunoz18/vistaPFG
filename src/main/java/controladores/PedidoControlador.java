@@ -1,3 +1,20 @@
+/**
+ * Servlet encargado de gestionar la creación de pedidos y el flujo de pago.
+ * <p>
+ * Soporta métodos GET y POST:
+ * </p>
+ * <ul>
+ *   <li><b>GET:</b> Usado para validar que una transacción PayPal fue exitosa y limpiar el carrito.</li>
+ *   <li><b>POST:</b> Procesa un nuevo pedido con los datos del formulario (usuario, dirección, pago),
+ *       valida la información y crea el pedido mediante {@link PedidoServicio}.</li>
+ * </ul>
+ * <p>
+ * Si se detecta pago con PayPal, se limpia el carrito y se omite la validación de tarjeta.
+ * En el flujo normal, se valida y encripta número de tarjeta y CVV. Admite recuperación
+ * del carrito desde sesión o desde un JSON externo (útil para pagos vía API o integración).
+ * </p>
+ *
+**/
 package controladores;
 
 import java.io.IOException;
@@ -40,7 +57,7 @@ public class PedidoControlador extends HttpServlet {
           
             session.setAttribute("mensaje", "Pago procesado con éxito.");
             session.setAttribute("tipoMensaje", "success");
-            response.sendRedirect("carrito?pedidoExitoso=true");
+            response.sendRedirect("carrito.jsp?pedidoExitoso=true");
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta el parámetro transaccionPaypal.");
         }
@@ -98,13 +115,13 @@ public class PedidoControlador extends HttpServlet {
             if (!validarNumeroTarjeta(numeroTarjeta)) {
                 session.setAttribute("mensaje", "El número de tarjeta no es válido. Debe contener entre 13 y 19 dígitos numéricos.");
                 session.setAttribute("tipoMensaje", "error");
-                response.sendRedirect("carrito");
+                response.sendRedirect("carrito.jsp");
                 return;
             }
             if (!validarCvc(cvc)) {
                 session.setAttribute("mensaje", "El código de seguridad (CVV) no es válido. Debe contener 3 o 4 dígitos.");
                 session.setAttribute("tipoMensaje", "error");
-                response.sendRedirect("carrito");
+                response.sendRedirect("carrito.jsp");
                 return;
             }
             numeroTarjeta = encriptarDatos(numeroTarjeta);
@@ -131,7 +148,7 @@ public class PedidoControlador extends HttpServlet {
         if (carrito == null || carrito.isEmpty()) {
             session.setAttribute("mensaje", "El carrito está vacío");
             session.setAttribute("tipoMensaje", "error");
-            response.sendRedirect("carrito");
+            response.sendRedirect("carrito.jsp");
             return;
         }
 
@@ -191,9 +208,9 @@ public class PedidoControlador extends HttpServlet {
         session.setAttribute("mensaje", mensajeRespuesta);
         session.setAttribute("tipoMensaje", tipoMensajeRespuesta);
         if ("Pedido creado correctamente".equals(mensajeRespuesta)) {
-            response.sendRedirect("carrito?pedidoExitoso=true");
+            response.sendRedirect("carrito.jsp?pedidoExitoso=true");
         } else {
-            response.sendRedirect("carrito");
+            response.sendRedirect("carrito.jsp");
         }
     }
 

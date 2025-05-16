@@ -1,0 +1,8 @@
+[INFO] - InicioControlador - doGet - Inicio del proceso de obtención de productos - controladores.InicioControlador.doGet(InicioControlador.java:37)
+[INFO] - InicioControlador - doGet - Productos obtenidos: 7 - controladores.InicioControlador.doGet(InicioControlador.java:50)
+[INFO] - LoginUsuarioControlador - doPost - Correo recibido: pruebascodec123@gmail.com, Contraseña recibida: 123 - controladores.LoginUsuarioControlador.doPost(LoginUsuarioControlador.java:40)
+[INFO] - LoginUsuarioControlador - doPost - idUsuario guardado en la sesión: 11, Rol del usuario: usuario - controladores.LoginUsuarioControlador.doPost(LoginUsuarioControlador.java:64)
+[INFO] - LoginUsuarioControlador - doPost - Redirigiendo a la página de inicio. - controladores.LoginUsuarioControlador.doPost(LoginUsuarioControlador.java:82)
+[INFO] - InicioControlador - doGet - Inicio del proceso de obtención de productos - controladores.InicioControlador.doGet(InicioControlador.java:37)
+[INFO] - InicioControlador - doGet - Productos obtenidos: 7 - controladores.InicioControlador.doGet(InicioControlador.java:50)
+[INFO] - CarritoControlador - doGet - Mostrando carrito de compras - controladores.CarritoControlador.doGet(CarritoControlador.java:110)

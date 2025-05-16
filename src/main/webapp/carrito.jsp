@@ -16,6 +16,7 @@
     <!-- Toastify JS -->
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <!-- SDK de PayPal en modo Sandbox -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=ATH9AU350i7mU-J5n1LsBsDtOkrAzOHmTFb6xZIO8QaFZVgDTRE2XhgFpqc-NqbW1-x5O0zkdsj88art&currency=EUR"></script>
 </head>
 <body>
@@ -63,7 +64,7 @@
                 <i class="bi bi-cart"></i> <!-- Ícono de carrito -->
                 <span class="cart-count">
                     <%
-                        List<CarritoDto> carrito = (List<CarritoDto>) request.getAttribute("carrito");
+                        List<CarritoDto> carrito = (List<CarritoDto>) session.getAttribute("carrito");
                         out.print(carrito != null ? carrito.size() : 0);
                     %>
                 </span> <!-- Número de productos en el carrito -->
