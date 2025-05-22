@@ -40,7 +40,7 @@ public class RegistroServicio {
 
             // Enviar el correo con el código usando la clase Utilidades
             String asunto = "Código de Verificación para Registro";
-            String mensaje = "Tu código de verificación es: " + codigoVerificacion;
+            String mensaje = "Tu código de verificación (valido por 5 minutos) es: " + codigoVerificacion;
             boolean correoEnviado = Utilidades.enviarCorreo(correo, asunto, mensaje);
             if (!correoEnviado) {
                 Utilidades.escribirLog(null, "[ERROR]", "RegistroServicio", "enviarCodigoVerificacion", "Error al enviar el correo a: " + correo);

@@ -1,0 +1,4 @@
+[INFO] - RegistroUsuarioControlador - doPost - Procesando solicitud POST en path: /enviarCodigo - controladores.RegistroUsuarioControlador.doPost(RegistroUsuarioControlador.java:55)
+[INFO] - RegistroUsuarioControlador - enviarCodigo - Procesando envío de código de verificación para correo: pruebascodec123@gmail.com - controladores.RegistroUsuarioControlador.enviarCodigo(RegistroUsuarioControlador.java:77)
+[INFO] - RegistroUsuarioControlador - enviarCodigo - Código de verificación enviado a: pruebascodec123@gmail.com - controladores.RegistroUsuarioControlador.enviarCodigo(RegistroUsuarioControlador.java:86)
+[INFO] - RegistroUsuarioControlador - doPost - Procesando solicitud POST en path: /registroUsuario - controladores.RegistroUsuarioControlador.doPost(RegistroUsuarioControlador.java:55)

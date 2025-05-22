@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import servicios.RegistroServicio;
 import java.io.IOException;
 import utilidades.Utilidades;
@@ -81,6 +82,7 @@ public class RegistroUsuarioControlador extends HttpServlet {
         }
         boolean enviado = registroServicio.enviarCodigoVerificacion(correo);
         if (enviado) {
+        	request.getSession().setAttribute("tsCodigo", System.currentTimeMillis());
             Utilidades.escribirLog(request.getSession(), "[INFO]", "RegistroUsuarioControlador", "enviarCodigo", "Código de verificación enviado a: " + correo);
             response.getWriter().write("Se ha enviado un código de verificación a tu correo.");
         } else {
@@ -103,6 +105,17 @@ public class RegistroUsuarioControlador extends HttpServlet {
      */
     private void registrarUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	HttpSession session = request.getSession();
+    	long maxEdad = 5 * 60 * 1000;
+    	Long ts = (Long) session.getAttribute("tsCodigo");
+    	if (ts == null || System.currentTimeMillis() - ts > maxEdad) {
+    	    request.setAttribute("mensaje", "El código ha expirado. Solicita uno nuevo.");
+    	    response.getWriter().write("No se pudo enviar el código. Verifica el correo ingresado.");
+    	    request.getRequestDispatcher("registro.jsp").forward(request, response);
+    	    return;
+    	}
+
         String nombre = request.getParameter("nombreUsuario");
         String telefono = request.getParameter("telefonoUsuario");
         String correo = request.getParameter("emailUsuario");

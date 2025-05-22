@@ -151,7 +151,7 @@ public class AutentificacionServicio {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 String asunto = "Recuperación de contraseña";
                 String enlaceRecuperacion = "https://tomcat.dmunoz.es/VistaCodeComponents/NuevaContrasenia?token=" + token;
-                String contenido = "Has solicitado la recuperación de tu contraseña. Utiliza el siguiente enlace para continuar:\n\n" + enlaceRecuperacion;
+                String contenido = "Has solicitado la recuperación de tu contraseña. Utiliza el siguiente enlace (valido por 24h) para continuar:\n\n" + enlaceRecuperacion;
                 Utilidades.escribirLog(null, "[INFO]", "AutentificacionServicio", "recuperarContrasenia", "Enviando correo de recuperación a: " + correo);
                 return Utilidades.enviarCorreo(correo, asunto, contenido);
             } else {

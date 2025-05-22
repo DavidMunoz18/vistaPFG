@@ -1,0 +1,3 @@
+[INFO] - RecuperarContraseniaControlador - doPost - Inicio de recuperación de contraseña para correo: davidmpm05@gmail.com - controladores.RecuperarContraseniaControlador.doPost(RecuperarContraseniaControlador.java:59)
+[INFO] - RecuperarContraseniaControlador - doPost - Token generado: 2f8a3f0e-bc1d-425b-a1b7-f12111345cc9 con fecha de expiración: 1747855753171 - controladores.RecuperarContraseniaControlador.doPost(RecuperarContraseniaControlador.java:82)
+[INFO] - RecuperarContraseniaControlador - doPost - Enlace de recuperación enviado a: davidmpm05@gmail.com - controladores.RecuperarContraseniaControlador.doPost(RecuperarContraseniaControlador.java:90)
