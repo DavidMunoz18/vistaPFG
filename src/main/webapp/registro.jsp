@@ -72,7 +72,7 @@
          <!-- Botón para iniciar sesión con Google -->
           <a href="<%= request.getContextPath() %>/loginGoogle">
             <button type="button" class="google-btn">
-              <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Logo de Google">
+              <img src="imagenes/Google-Logo-PNG-180x180.png" alt="Logo de Google" style="height: 16px; width: auto;">
               Registrarse con Google
             </button>
           </a>
