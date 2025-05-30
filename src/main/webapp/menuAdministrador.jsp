@@ -823,7 +823,13 @@ mark {
                   resaltarCoincidencias('verUsuarios', [1,3], this.value)" />
 					</div>
 
-
+					<!-- Botón para exportar PDF (sin JSTL) -->
+					<div class="d-flex justify-content-end mb-2">
+						<a href="<%=request.getContextPath()%>/exportarUsuariosPdf"
+							class="btn btn-outline-primary"> <i
+							class="bi bi-file-earmark-pdf"></i> Exportar PDF
+						</a>
+					</div>
 					<table class="table table-bordered">
 						<thead>
 							<tr>
